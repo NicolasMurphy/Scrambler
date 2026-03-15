@@ -1,0 +1,8 @@
+<svg width="50.8mm" height="128.5mm" viewBox="0 0 50.8 128.5" xmlns="http://www.w3.org/2000/svg">
+  <rect width="50.8" height="128.5" fill="#1a1a1a"/>
+  <text x="25.4" y="10" text-anchor="middle" fill="white" font-size="4">SCRAMBLER</text>
+  <text x="25.4" y="22" text-anchor="middle" fill="white" font-size="3">CLEAN</text>
+  <text x="25.4" y="42" text-anchor="middle" fill="white" font-size="3">SCRAMBLE</text>
+  <text x="25.4" y="62" text-anchor="middle" fill="white" font-size="3">IN</text>
+  <text x="25.4" y="82" text-anchor="middle" fill="white" font-size="3">OUT</text>
+</svg>
