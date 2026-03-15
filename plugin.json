@@ -1,23 +1,18 @@
 {
   "slug": "Scrambler",
   "name": "Scrambler",
-  "version": "2.0.0",
-  "license": "proprietary",
-  "brand": "Scrambler",
+  "version": "0.1.0",
+  "license": "MIT",
+  "brand": "Nicolas Murphy",
   "author": "Nicolas Murphy",
-  "authorEmail": "",
-  "authorUrl": "",
-  "pluginUrl": "",
-  "manualUrl": "",
-  "sourceUrl": "",
-  "donateUrl": "",
-  "changelogUrl": "",
+  "authorUrl": "https://github.com/NicolasMurphy",
+  "sourceUrl": "https://github.com/NicolasMurphy/Scrambler",
   "modules": [
     {
       "slug": "Scrambler",
       "name": "Scrambler",
-      "description": "",
-      "tags": []
+      "description": "Alternates between clean passthrough and reordered sample windows of configurable size.",
+      "tags": ["Effect"]
     }
   ]
 }

@@ -108,7 +108,7 @@ struct ScramblerWidget : ModuleWidget
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(12, 90)), module, Scrambler::IN_INPUT));
         addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(38, 90)), module, Scrambler::OUT_OUTPUT));
 
-        addLabel(this, "SCRAMBLER", 36, 5, 170);
+        addLabel(this, "SCRAMBLER", 38, 5, 170);
         addLabel(this, "CLEAN", 12, 70, 70);
         addLabel(this, "SCRAMBLE", 78, 70, 70);
         addLabel(this, "IN", 23, 290, 70);

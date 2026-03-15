@@ -1,6 +1,6 @@
 # Scrambler
 
-A VCV Rack 2 plugin that glitches audio by alternating between clean passthrough and randomized sample chunks.
+A VCV Rack 2 plugin that alternates between clean passthrough and reordered sample windows of configurable size.
 
 ## Building
 
