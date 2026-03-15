@@ -21,10 +21,13 @@ struct Scrambler : Module
         OUTPUTS_LEN
     };
 
-    std::vector<float> buffer;
+    std::vector<float> collectBuffer;
+    std::vector<float> playbackBuffer;
     int position = 0;
     bool inClean = true;
-    int bufferIndex = 0;
+    int collectIndex = 0;
+    int playbackIndex = 0;
+    bool inPlayback = false;
     std::mt19937 rng{std::random_device{}()};
 
     Scrambler()
@@ -42,6 +45,18 @@ struct Scrambler : Module
         int scrambleLen = (int)params[SCRAMBLE_PARAM].getValue();
         float in = inputs[IN_INPUT].getVoltage();
 
+        if (inPlayback)
+        {
+            outputs[OUT_OUTPUT].setVoltage(playbackBuffer[playbackIndex++]);
+            if (playbackIndex >= (int)playbackBuffer.size())
+            {
+                inPlayback = false;
+                inClean = true;
+                position = 0;
+            }
+            return;
+        }
+
         if (inClean)
         {
             outputs[OUT_OUTPUT].setVoltage(in);
@@ -50,30 +65,35 @@ struct Scrambler : Module
             {
                 position = 0;
                 inClean = false;
-                buffer.resize(scrambleLen);
-                bufferIndex = 0;
+                collectBuffer.resize(scrambleLen);
+                collectIndex = 0;
             }
         }
         else
         {
-            buffer[bufferIndex++] = in;
-            if (bufferIndex >= scrambleLen)
+            collectBuffer[collectIndex++] = in;
+            outputs[OUT_OUTPUT].setVoltage(0.f);
+            if (collectIndex >= scrambleLen)
             {
-                std::shuffle(buffer.begin(), buffer.end(), rng);
-                for (float s : buffer)
-                {
-                    outputs[OUT_OUTPUT].setVoltage(s);
-                }
-                inClean = true;
-                position = 0;
-            }
-            else
-            {
-                outputs[OUT_OUTPUT].setVoltage(0.f);
+                playbackBuffer = collectBuffer;
+                std::shuffle(playbackBuffer.begin(), playbackBuffer.end(), rng);
+                playbackIndex = 0;
+                inPlayback = true;
             }
         }
     }
 };
+
+static void addLabel(rack::widget::Widget *parent, const char *text, float x, float y, float width)
+{
+    rack::ui::Label *label = new rack::ui::Label;
+    label->box.pos = rack::math::Vec(x, y);
+    label->box.size = rack::math::Vec(width, 20);
+    label->text = text;
+    label->color = nvgRGB(255, 255, 255);
+    label->fontSize = 11;
+    parent->addChild(label);
+}
 
 struct ScramblerWidget : ModuleWidget
 {
@@ -82,10 +102,17 @@ struct ScramblerWidget : ModuleWidget
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Scrambler.svg")));
 
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10, 20)), module, Scrambler::CLEAN_PARAM));
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10, 40)), module, Scrambler::SCRAMBLE_PARAM));
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(10, 60)), module, Scrambler::IN_INPUT));
-        addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 80)), module, Scrambler::OUT_OUTPUT));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12, 40)), module, Scrambler::CLEAN_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(38, 40)), module, Scrambler::SCRAMBLE_PARAM));
+
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(12, 90)), module, Scrambler::IN_INPUT));
+        addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(38, 90)), module, Scrambler::OUT_OUTPUT));
+
+        addLabel(this, "SCRAMBLER", 36, 5, 170);
+        addLabel(this, "CLEAN", 12, 70, 70);
+        addLabel(this, "SCRAMBLE", 78, 70, 70);
+        addLabel(this, "IN", 23, 290, 70);
+        addLabel(this, "OUT", 96, 290, 70);
     }
 };
 
