@@ -102,17 +102,11 @@ struct ScramblerWidget : ModuleWidget
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Scrambler.svg")));
 
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(12, 40)), module, Scrambler::CLEAN_PARAM));
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(38, 40)), module, Scrambler::SCRAMBLE_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(8.4, 30.89)), module, Scrambler::CLEAN_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.57, 31.02)), module, Scrambler::SCRAMBLE_PARAM));
 
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(12, 90)), module, Scrambler::IN_INPUT));
-        addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(38, 90)), module, Scrambler::OUT_OUTPUT));
-
-        addLabel(this, "SCRAMBLER", 38, 5, 170);
-        addLabel(this, "CLEAN", 12, 70, 70);
-        addLabel(this, "SCRAMBLE", 78, 70, 70);
-        addLabel(this, "IN", 23, 290, 70);
-        addLabel(this, "OUT", 96, 290, 70);
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.27, 110.93)), module, Scrambler::IN_INPUT));
+        addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(31.15, 111.19)), module, Scrambler::OUT_OUTPUT));
     }
 };
 
