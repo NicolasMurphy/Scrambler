@@ -45,8 +45,15 @@ struct Scrambler : Module
 
     void process(const ProcessArgs &args) override
     {
-        int cleanLen = (int)params[CLEAN_PARAM].getValue();
-        int scrambleLen = (int)params[SCRAMBLE_PARAM].getValue();
+        float cleanVal = params[CLEAN_PARAM].getValue();
+        if (inputs[CVINC_INPUT].isConnected())
+            cleanVal += inputs[CVINC_INPUT].getVoltage() * 1000.f;
+        int cleanLen = std::max(1, (int)cleanVal);
+
+        float scrambleVal = params[SCRAMBLE_PARAM].getValue();
+        if (inputs[CVINS_INPUT].isConnected())
+            scrambleVal += inputs[CVINS_INPUT].getVoltage() * 1000.f;
+        int scrambleLen = std::max(1, (int)scrambleVal);
         float in = inputs[IN_INPUT].getVoltage();
 
         if (inPlayback)
