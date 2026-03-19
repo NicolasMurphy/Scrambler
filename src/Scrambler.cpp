@@ -13,6 +13,8 @@ struct Scrambler : Module
     enum InputId
     {
         IN_INPUT,
+        CVINC_INPUT,
+        CVINS_INPUT,
         INPUTS_LEN
     };
     enum OutputId
@@ -37,6 +39,8 @@ struct Scrambler : Module
         configParam(SCRAMBLE_PARAM, 0.f, 10000.f, 200.f, "Scramble samples");
         configInput(IN_INPUT, "Audio");
         configOutput(OUT_OUTPUT, "Audio");
+        configInput(CVINC_INPUT, "Clean CV");
+        configInput(CVINS_INPUT, "Scramble CV");
     }
 
     void process(const ProcessArgs &args) override
@@ -102,9 +106,15 @@ struct ScramblerWidget : ModuleWidget
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Scrambler.svg")));
 
+        // Knobs
         addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(10, 30.5)), module, Scrambler::CLEAN_PARAM));
         addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(30, 30.5)), module, Scrambler::SCRAMBLE_PARAM));
 
+        // CV inputs
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.9, 48.5)), module, Scrambler::CVINC_INPUT));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(30.4, 48.5)), module, Scrambler::CVINS_INPUT));
+
+        // Audio in/out
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.5, 110.5)), module, Scrambler::IN_INPUT));
         addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(31.5, 110.5)), module, Scrambler::OUT_OUTPUT));
     }
