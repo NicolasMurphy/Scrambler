@@ -2,6 +2,8 @@
 
 A VCV Rack 2 plugin that alternates between clean passthrough and reordered sample windows of configurable size.
 
+![Scrambler signal-flow diagram](docs/scrambler-diagram-v2.svg)
+
 ## Building
 
 See https://vcvrack.com/manual/Building
