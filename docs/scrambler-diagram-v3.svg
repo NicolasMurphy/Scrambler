@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 25 610 335"
+   viewBox="0 25 550 335"
    font-family="Georgia, serif"
    version="1.1"
    id="svg24"
@@ -139,14 +139,14 @@
      class="connector"
      id="path6" />
   <path
-     d="M 388 74 L 388 90 Q 388 100 398 100 L 560 100 Q 570 100 570 110 L 570 130"
+     d="M 388 74 L 388 90 Q 388 100 398 100 L 500 100 Q 510 100 510 110 L 510 130"
      class="connector"
      id="path7" />
   <!-- Detail view -->
   <rect
      x="90"
      y="130"
-     width="500"
+     width="440"
      height="190"
      rx="4"
      fill="#fafafa"
