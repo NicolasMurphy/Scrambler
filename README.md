@@ -2,7 +2,7 @@
 
 A VCV Rack 2 plugin that alternates between clean passthrough and randomly reordered individual samples.
 
-![Scrambler diagram](docs/scrambler-diagram-v5.svg)
+![Scrambler diagram](docs/scrambler-diagram-v6.svg)
 
 ## Building
 
