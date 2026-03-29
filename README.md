@@ -1,6 +1,6 @@
 # Scrambler
 
-A VCV Rack 2 plugin that alternates between clean passthrough and reordered sample windows of configurable size.
+A VCV Rack 2 plugin that alternates between clean passthrough and randomly reordered individual samples.
 
 ![Scrambler diagram](docs/scrambler-diagram-v4.svg)
 

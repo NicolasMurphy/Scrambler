@@ -11,7 +11,7 @@
     {
       "slug": "Scrambler",
       "name": "Scrambler",
-      "description": "Alternates between clean passthrough and reordered sample windows of configurable size.",
+      "description": "Alternates between clean passthrough and randomly reordered individual samples.",
       "tags": ["Effect"]
     }
   ]
