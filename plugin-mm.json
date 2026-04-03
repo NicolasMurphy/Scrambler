@@ -1,0 +1,14 @@
+{
+  "MetaModuleBrandName": "Berserk Audio",
+  "MetaModuleBrandSlug": "Scrambler",
+  "MetaModulePluginMaintainer": "Nicolas Murphy",
+  "MetaModulePluginMaintainerUrl": "https://github.com/NicolasMurphy",
+  "MetaModuleDescription": "Alternates between clean passthrough and randomly reordered samples.",
+  "MetaModuleIncludedModules": [
+    {
+      "slug": "Scrambler",
+      "name": "Scrambler",
+      "displayName": "Scrambler"
+    }
+  ]
+}

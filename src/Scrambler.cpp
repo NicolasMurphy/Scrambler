@@ -95,6 +95,7 @@ struct Scrambler : Module
     }
 };
 
+#ifndef METAMODULE
 static void addLabel(rack::widget::Widget *parent, const char *text, float x, float y, float width)
 {
     rack::ui::Label *label = new rack::ui::Label;
@@ -105,6 +106,7 @@ static void addLabel(rack::widget::Widget *parent, const char *text, float x, fl
     label->fontSize = 11;
     parent->addChild(label);
 }
+#endif
 
 struct ScramblerWidget : ModuleWidget
 {

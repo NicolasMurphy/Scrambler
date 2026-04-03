@@ -7,3 +7,5 @@
 /build
 /dep
 /dist
+/mm-build
+/metamodule-plugins
