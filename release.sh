@@ -19,8 +19,8 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     exit 1
 fi
 
-# Extract major.minor for CMakeLists.txt (it uses VERSION X.Y, no patch)
-CMAKE_VERSION="${VERSION%.*}"
+# Full version for CMakeLists.txt
+CMAKE_VERSION="$VERSION"
 
 # Check for uncommitted changes
 if ! git diff --quiet || ! git diff --cached --quiet; then
@@ -55,7 +55,7 @@ jq --arg v "$VERSION" '.version = $v' plugin.json > plugin.json.tmp && mv plugin
 echo "Updated plugin.json → $VERSION"
 
 # 2. Update CMakeLists.txt
-sed -i.bak -E "s/(^    VERSION )[0-9]+\.[0-9]+/\1$CMAKE_VERSION/" CMakeLists.txt && rm CMakeLists.txt.bak
+sed -i.bak -E "s/(^    VERSION )[0-9]+\.[0-9]+(\.[0-9]+)?/\1$CMAKE_VERSION/" CMakeLists.txt && rm CMakeLists.txt.bak
 echo "Updated CMakeLists.txt → VERSION $CMAKE_VERSION"
 
 # 3. Commit
