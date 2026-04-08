@@ -40,9 +40,8 @@ echo "  This will:"
 echo "    1. Update plugin.json       ($CURRENT_VERSION → $VERSION)"
 echo "    2. Update CMakeLists.txt    (VERSION $CMAKE_VERSION)"
 echo "    3. Commit: \"Bump version to $VERSION\""
-echo "    4. Tag:    v$VERSION  (VCV Rack release)"
-echo "    5. Tag:    mm-v$VERSION  (MetaModule release)"
-echo "    6. Push commit + both tags"
+echo "    4. Tag:    v$VERSION  (triggers build for VCV Rack + MetaModule)"
+echo "    5. Push commit + tag"
 echo ""
 read -p "  Proceed? [y/N] " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
@@ -63,14 +62,12 @@ git add plugin.json CMakeLists.txt
 git commit -m "Bump version to $VERSION"
 echo "Committed."
 
-# 4-5. Tag
+# 4. Tag
 git tag "v$VERSION"
-git tag "mm-v$VERSION"
-echo "Tagged v$VERSION and mm-v$VERSION"
+echo "Tagged v$VERSION"
 
-# 6. Push
+# 5. Push
 git push && git push --tags
 echo ""
-echo "Done! Both workflows should now be running:"
+echo "Done! Build running at:"
 echo "  https://github.com/NicolasMurphy/Scrambler/actions/workflows/build-plugin.yml"
-echo "  https://github.com/NicolasMurphy/Scrambler/actions/workflows/build-metamodule.yml"
