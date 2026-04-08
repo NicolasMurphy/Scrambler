@@ -15,7 +15,7 @@ include(${METAMODULE_SDK_DIR}/plugin.cmake)
 
 # --- Project definition ---
 project(Scrambler
-    VERSION 2.0
+    VERSION 2.0.1
     DESCRIPTION "Scrambler Plugin for MetaModule"
     LANGUAGES C CXX ASM
 )
