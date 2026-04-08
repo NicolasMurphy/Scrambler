@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build inkscape jq
+          sudo apt-get install -y cmake ninja-build inkscape
 
       - name: Install ARM GCC 12.3 toolchain
         run: |
@@ -39,16 +39,6 @@ jobs:
 
       - name: Build
         run: cmake --build mm-build
-
-      - name: Get version from plugin.json
-        id: version
-        run: |
-          VERSION=$(jq -r '.version' plugin.json)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Rename with version
-        run: |
-          mv metamodule-plugins/Scrambler.mmplugin metamodule-plugins/Scrambler-v${{ steps.version.outputs.version }}.mmplugin
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
