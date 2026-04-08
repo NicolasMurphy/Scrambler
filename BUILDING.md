@@ -11,7 +11,7 @@ make install
 
 ### Installing a .vcvplugin from CI
 
-If you need to test a `.vcvplugin` artifact from GitHub Actions (rather than building locally), the file is zstd-compressed and needs to be manually extracted:
+If you need to test a `.vcvplugin` artifact from GitHub Actions/Release (rather than building locally), the file is zstd-compressed and needs to be manually extracted:
 
 ```bash
 brew install zstd  # if not already installed

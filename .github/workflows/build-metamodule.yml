@@ -78,7 +78,7 @@ jobs:
           tag_name: ${{ github.ref }}
           name: Scrambler v${{ steps.version.outputs.version }} (MetaModule)
           body: |
-            Scrambler plugin compiled for 4ms MetaModule. Copy the .mmplugin file to a USB/SD card and scan disks to install.
+            Scrambler plugin compiled for 4ms MetaModule.
           draft: false
           prerelease: false
           files: _artifacts/*
