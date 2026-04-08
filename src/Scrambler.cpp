@@ -84,7 +84,7 @@ struct Scrambler : Module
         {
             collectBuffer[collectIndex++] = in;
             outputs[OUT_OUTPUT].setVoltage(0.f);
-            if (collectIndex >= scrambleLen)
+            if (collectIndex >= (int)collectBuffer.size())
             {
                 playbackBuffer = collectBuffer;
                 std::shuffle(playbackBuffer.begin(), playbackBuffer.end(), rng);
