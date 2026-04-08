@@ -9,6 +9,18 @@ export RACK_DIR=~/Rack-SDK
 make install
 ```
 
+### Installing a .vcvplugin from CI
+
+If you need to test a `.vcvplugin` artifact from GitHub Actions (rather than building locally), the file is zstd-compressed and needs to be manually extracted:
+
+```bash
+brew install zstd  # if not already installed
+zstd -d ~/Downloads/Scrambler-2.0.0-mac-arm64.vcvplugin -o ~/Downloads/Scrambler-2.0.0-mac-arm64.tar
+tar -xf ~/Downloads/Scrambler-2.0.0-mac-arm64.tar -C '/Users/nicolasmurphy/Library/Application Support/Rack2/plugins-mac-arm64/'
+```
+
+Then restart Rack. The plugins directory may differ by platform and architecture.
+
 ## MetaModule
 
 > **Note:** The paths below assume a `~/projects/` layout (e.g. `~/projects/Scrambler`, `~/projects/metamodule-plugin-sdk`). Adjust to match your machine.

@@ -35,8 +35,8 @@ struct Scrambler : Module
     Scrambler()
     {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN);
-        configParam(CLEAN_PARAM, 0.f, 10000.f, 3000.f, "Clean samples");
-        configParam(SCRAMBLE_PARAM, 0.f, 10000.f, 200.f, "Scramble samples");
+        configParam(CLEAN_PARAM, 0.f, 3000.f, 200.f, "Clean samples");
+        configParam(SCRAMBLE_PARAM, 0.f, 3000.f, 200.f, "Scramble samples");
         configInput(IN_INPUT, "Audio");
         configOutput(OUT_OUTPUT, "Audio");
         configInput(CVINC_INPUT, "Clean CV");
