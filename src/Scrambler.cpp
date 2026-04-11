@@ -27,6 +27,7 @@ struct Scrambler : Module
 
     std::vector<float> collectBuffer;
     std::vector<float> playbackBuffer;
+    std::vector<int> chunkIndices;
     int position = 0;
     bool inClean = true;
     int collectIndex = 0;
@@ -102,7 +103,7 @@ struct Scrambler : Module
                 int remainder = bufSize % chunkSize;
 
                 // Build shuffled index list for chunks
-                std::vector<int> chunkIndices(numChunks);
+                chunkIndices.resize(numChunks);
                 for (int i = 0; i < numChunks; i++)
                     chunkIndices[i] = i;
                 std::shuffle(chunkIndices.begin(), chunkIndices.end(), rng);
