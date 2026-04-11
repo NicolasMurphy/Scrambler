@@ -1,6 +1,6 @@
 name: Build Scrambler
 
-on: [push, pull_request]
+on: [push]
 
 env:
   rack-sdk-version: 2.6.6
