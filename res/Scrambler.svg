@@ -181,5 +181,12 @@
        cy="48.5"
        r="3.5"
        inkscape:label="CVINC" />
+    <circle
+       style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583"
+       id="circle3"
+       cx="20"
+       cy="75"
+       r="5.5"
+       inkscape:label="CHUNK" />
   </g>
 </svg>

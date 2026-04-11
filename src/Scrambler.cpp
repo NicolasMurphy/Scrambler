@@ -8,6 +8,7 @@ struct Scrambler : Module
     {
         CLEAN_PARAM,
         SCRAMBLE_PARAM,
+        CHUNK_PARAM,
         PARAMS_LEN
     };
     enum InputId
@@ -37,6 +38,8 @@ struct Scrambler : Module
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN);
         configParam(CLEAN_PARAM, 0.f, 3000.f, 200.f, "Clean samples");
         configParam(SCRAMBLE_PARAM, 0.f, 3000.f, 200.f, "Scramble samples");
+        configParam(CHUNK_PARAM, 1.f, 1000.f, 1.f, "Chunk size");
+        paramQuantities[CHUNK_PARAM]->snapEnabled = true;
         configInput(IN_INPUT, "Audio");
         configOutput(OUT_OUTPUT, "Audio");
         configInput(CVINC_INPUT, "Clean CV");
@@ -86,8 +89,30 @@ struct Scrambler : Module
             outputs[OUT_OUTPUT].setVoltage(0.f);
             if (collectIndex >= (int)collectBuffer.size())
             {
-                playbackBuffer = collectBuffer;
-                std::shuffle(playbackBuffer.begin(), playbackBuffer.end(), rng);
+                int chunkSize = std::max(1, (int)params[CHUNK_PARAM].getValue());
+                int bufSize = (int)collectBuffer.size();
+                int numChunks = bufSize / chunkSize;
+                int remainder = bufSize % chunkSize;
+
+                // Build shuffled index list for chunks
+                std::vector<int> chunkIndices(numChunks);
+                for (int i = 0; i < numChunks; i++)
+                    chunkIndices[i] = i;
+                std::shuffle(chunkIndices.begin(), chunkIndices.end(), rng);
+
+                // Reconstruct playback buffer with shuffled chunks
+                playbackBuffer.resize(bufSize);
+                int writePos = 0;
+                for (int i = 0; i < numChunks; i++)
+                {
+                    int srcStart = chunkIndices[i] * chunkSize;
+                    for (int j = 0; j < chunkSize; j++)
+                        playbackBuffer[writePos++] = collectBuffer[srcStart + j];
+                }
+                // Append any remainder samples unshuffled
+                for (int i = 0; i < remainder; i++)
+                    playbackBuffer[writePos++] = collectBuffer[numChunks * chunkSize + i];
+
                 playbackIndex = 0;
                 inPlayback = true;
             }
@@ -122,6 +147,9 @@ struct ScramblerWidget : ModuleWidget
         // CV inputs
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.9, 48.5)), module, Scrambler::CVINC_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(30.4, 48.5)), module, Scrambler::CVINS_INPUT));
+
+        // Chunk size knob
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 75)), module, Scrambler::CHUNK_PARAM));
 
         // Audio in/out
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.5, 110.5)), module, Scrambler::IN_INPUT));
