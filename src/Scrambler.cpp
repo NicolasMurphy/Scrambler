@@ -122,18 +122,6 @@ struct Scrambler : Module
     }
 };
 
-#ifndef METAMODULE
-static void addLabel(rack::widget::Widget *parent, const char *text, float x, float y, float width)
-{
-    rack::ui::Label *label = new rack::ui::Label;
-    label->box.pos = rack::math::Vec(x, y);
-    label->box.size = rack::math::Vec(width, 20);
-    label->text = text;
-    label->color = nvgRGB(255, 255, 255);
-    label->fontSize = 11;
-    parent->addChild(label);
-}
-#endif
 
 struct ScramblerWidget : ModuleWidget
 {
