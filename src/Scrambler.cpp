@@ -39,6 +39,8 @@ struct Scrambler : Module
         configParam(CLEAN_PARAM, 0.f, 3000.f, 200.f, "Clean samples");
         configParam(SCRAMBLE_PARAM, 0.f, 3000.f, 200.f, "Scramble samples");
         configParam(CHUNK_PARAM, 1.f, 1000.f, 1.f, "Chunk size");
+        paramQuantities[CLEAN_PARAM]->snapEnabled = true;
+        paramQuantities[SCRAMBLE_PARAM]->snapEnabled = true;
         paramQuantities[CHUNK_PARAM]->snapEnabled = true;
         configInput(IN_INPUT, "Audio");
         configOutput(OUT_OUTPUT, "Audio");
