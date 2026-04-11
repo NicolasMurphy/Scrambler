@@ -39,7 +39,7 @@ struct Scrambler : Module
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN);
         configParam(CLEAN_PARAM, 0.f, 3000.f, 200.f, "Clean samples");
         configParam(SCRAMBLE_PARAM, 0.f, 3000.f, 200.f, "Scramble samples");
-        configParam(CHUNK_PARAM, 1.f, 1000.f, 1.f, "Chunk size");
+        configParam(CHUNK_PARAM, 1.f, 200.f, 1.f, "Chunk size");
         paramQuantities[CLEAN_PARAM]->snapEnabled = true;
         paramQuantities[SCRAMBLE_PARAM]->snapEnabled = true;
         paramQuantities[CHUNK_PARAM]->snapEnabled = true;
@@ -136,16 +136,16 @@ struct ScramblerWidget : ModuleWidget
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Scrambler.svg")));
 
         // Group 1: Clean
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 23.5)), module, Scrambler::CLEAN_PARAM));
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20.1, 37.5)), module, Scrambler::CVINC_INPUT));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 22.5)), module, Scrambler::CLEAN_PARAM));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20.1, 37)), module, Scrambler::CVINC_INPUT));
 
         // Group 2: Scramble
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 54)), module, Scrambler::SCRAMBLE_PARAM));
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20, 67.5)), module, Scrambler::CVINS_INPUT));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 53.5)), module, Scrambler::SCRAMBLE_PARAM));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20, 67.7)), module, Scrambler::CVINS_INPUT));
 
         // Group 3: Chunk
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 83)), module, Scrambler::CHUNK_PARAM));
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20, 95.5)), module, Scrambler::CVINCH_INPUT));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 84)), module, Scrambler::CHUNK_PARAM));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20, 98.5)), module, Scrambler::CVINCH_INPUT));
 
         // Audio in/out
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.5, 110.5)), module, Scrambler::IN_INPUT));
