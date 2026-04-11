@@ -137,7 +137,7 @@ struct ScramblerWidget : ModuleWidget
 
         // Group 1: Clean
         addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 22.5)), module, Scrambler::CLEAN_PARAM));
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20.1, 37)), module, Scrambler::CVINC_INPUT));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20, 37)), module, Scrambler::CVINC_INPUT));
 
         // Group 2: Scramble
         addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(20, 53.5)), module, Scrambler::SCRAMBLE_PARAM));

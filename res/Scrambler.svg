@@ -24,8 +24,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="2.3369357"
-     inkscape:cx="-2.1395539"
-     inkscape:cy="320.07727"
+     inkscape:cx="-10.69777"
+     inkscape:cy="305.5283"
      inkscape:window-width="1728"
      inkscape:window-height="957"
      inkscape:window-x="0"
@@ -139,7 +139,7 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="components"
-     style="display:none">
+     style="display:inline">
     <circle
        style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583"
        id="path5"
@@ -178,7 +178,7 @@
     <circle
        style="fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="circle2"
-       cx="20.1"
+       cx="20"
        cy="37"
        r="3.5"
        inkscape:label="CVINC" />
