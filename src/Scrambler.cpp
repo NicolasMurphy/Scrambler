@@ -25,9 +25,17 @@ struct Scrambler : Module
         OUTPUTS_LEN
     };
 
+    // Hard upper bound on buffer lengths: knob max (3000) + worst-case CV
+    // contribution (+/- 10V * 1000 = +/- 10000), rounded up for headroom.
+    // All buffers are resized once at construction to this capacity, so
+    // process() never hits the allocator on the audio thread.
+    static constexpr int MAX_SAMPLES = 16384;
+
     std::vector<float> collectBuffer;
     std::vector<float> playbackBuffer;
     std::vector<int> chunkIndices;
+    int collectLen = 0;     // logical length in use (<= MAX_SAMPLES)
+    int playbackLen = 0;    // logical length in use (<= MAX_SAMPLES)
     int position = 0;
     bool inClean = true;
     int collectIndex = 0;
@@ -49,6 +57,12 @@ struct Scrambler : Module
         configInput(CVINC_INPUT, "Clean CV");
         configInput(CVINS_INPUT, "Scramble CV");
         configInput(CVINCH_INPUT, "Chunk CV");
+
+        // One-time allocation on the construction (UI) thread. chunkIndices
+        // needs up to MAX_SAMPLES entries in the worst case (chunkSize == 1).
+        collectBuffer.resize(MAX_SAMPLES);
+        playbackBuffer.resize(MAX_SAMPLES);
+        chunkIndices.resize(MAX_SAMPLES);
     }
 
     void process(const ProcessArgs &args) override
@@ -61,13 +75,15 @@ struct Scrambler : Module
         float scrambleVal = params[SCRAMBLE_PARAM].getValue();
         if (inputs[CVINS_INPUT].isConnected())
             scrambleVal += inputs[CVINS_INPUT].getVoltage() * 1000.f;
-        int scrambleLen = std::max(1, (int)scrambleVal);
+        // Clamp to MAX_SAMPLES so we never index past the pre-allocated buffer.
+        // Using rack::clamp (from math.hpp) since the SDK targets C++11.
+        int scrambleLen = clamp((int)scrambleVal, 1, MAX_SAMPLES);
         float in = inputs[IN_INPUT].getVoltage();
 
         if (inPlayback)
         {
             outputs[OUT_OUTPUT].setVoltage(playbackBuffer[playbackIndex++]);
-            if (playbackIndex >= (int)playbackBuffer.size())
+            if (playbackIndex >= playbackLen)
             {
                 inPlayback = false;
                 inClean = true;
@@ -84,7 +100,7 @@ struct Scrambler : Module
             {
                 position = 0;
                 inClean = false;
-                collectBuffer.resize(scrambleLen);
+                collectLen = scrambleLen;   // logical length only; no realloc
                 collectIndex = 0;
             }
         }
@@ -92,24 +108,24 @@ struct Scrambler : Module
         {
             collectBuffer[collectIndex++] = in;
             outputs[OUT_OUTPUT].setVoltage(0.f);
-            if (collectIndex >= (int)collectBuffer.size())
+            if (collectIndex >= collectLen)
             {
                 float chunkVal = params[CHUNK_PARAM].getValue();
                 if (inputs[CVINCH_INPUT].isConnected())
                     chunkVal += inputs[CVINCH_INPUT].getVoltage() * 1000.f;
                 int chunkSize = std::max(1, (int)chunkVal);
-                int bufSize = (int)collectBuffer.size();
-                int numChunks = bufSize / chunkSize;
-                int remainder = bufSize % chunkSize;
+                int numChunks = collectLen / chunkSize;
+                int remainder = collectLen % chunkSize;
 
-                // Build shuffled index list for chunks
-                chunkIndices.resize(numChunks);
+                // Build a shuffled index list over the active chunks only.
+                // chunkIndices is pre-sized to MAX_SAMPLES, so we shuffle a
+                // sub-range rather than calling resize().
                 for (int i = 0; i < numChunks; i++)
                     chunkIndices[i] = i;
-                std::shuffle(chunkIndices.begin(), chunkIndices.end(), rng);
+                std::shuffle(chunkIndices.begin(),
+                             chunkIndices.begin() + numChunks, rng);
 
-                // Reconstruct playback buffer with shuffled chunks
-                playbackBuffer.resize(bufSize);
+                // Reconstruct playback buffer with shuffled chunks.
                 int writePos = 0;
                 for (int i = 0; i < numChunks; i++)
                 {
@@ -117,10 +133,11 @@ struct Scrambler : Module
                     for (int j = 0; j < chunkSize; j++)
                         playbackBuffer[writePos++] = collectBuffer[srcStart + j];
                 }
-                // Append any remainder samples unshuffled
+                // Append any remainder samples unshuffled.
                 for (int i = 0; i < remainder; i++)
                     playbackBuffer[writePos++] = collectBuffer[numChunks * chunkSize + i];
 
+                playbackLen = writePos;     // == collectLen
                 playbackIndex = 0;
                 inPlayback = true;
             }
