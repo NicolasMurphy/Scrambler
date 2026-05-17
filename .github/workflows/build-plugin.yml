@@ -3,7 +3,8 @@ name: Build Scrambler
 on:
   push:
     paths-ignore:
-      - '*.md'
+      - '**/*.md'
+      - 'docs/**'
 
 env:
   rack-sdk-version: 2.6.6
